@@ -41,7 +41,8 @@ public class MainApp {
             }
         }*/
         ClientesDTO cliente = new ClientesDTO();
-        clientesDAO.eliminarCliente(cliente);
+        TreeSet<ClientesDTO> lista = clientesDAO.buscarPorId(3);
+        
 
     }
 

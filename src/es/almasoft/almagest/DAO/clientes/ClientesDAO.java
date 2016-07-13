@@ -158,18 +158,52 @@ public class ClientesDAO implements IClientes {
 
         } catch (Exception e) {
             //dialogoError = new DialogoError(e);
-            e.printStackTrace();
+            ErrorDialog errorDialog = new ErrorDialog("Error cargando la lista de clientes.", e);
+            errorDialog.setVisible(true);
         }
         return listaClientes;
     }
 
     @Override
-    public TreeSet<ClientesDTO> buscarPorId() {
+    public TreeSet<ClientesDTO> buscarPorId(Integer clientePk) {
+        listaClientes = new TreeSet< ClientesDTO>();
+        String consultaCliente = "SELECT * FROM clientes WHERE clientepk=?";
+
+        try {
+            PreparedStatement consulta = conn.prepareStatement(consultaCliente);
+            consulta.setInt(1, clientePk);
+            ResultSet res = consulta.executeQuery();
+
+            while (res.next()) {
+                ClientesDTO cliente = new ClientesDTO();
+                cliente.setClientePk(res.getInt("clientepk"));
+                cliente.setNifCliente(res.getString("nif"));
+                cliente.setNombreCliente(res.getString("nombre"));
+                cliente.setApellidoPaternoCliente(res.getString("apellido1"));
+                cliente.setApellidoMaternoCliente(res.getString("apellido2"));
+                cliente.setApellidoPaternoCliente(res.getString("apellido1"));
+                cliente.setFechaNacimientoCliente(res.getDate("fechanacimiento"));
+                cliente.setDireccionCliente(res.getString("direccion"));
+                cliente.setPoblacionPk(res.getInt("poblacionpk"));
+                cliente.setCodigoPostalCliente(res.getInt("codigopostal"));
+                cliente.setClienteActivo(res.getBoolean("clienteactivo"));
+                listaClientes.add(cliente);
+            }
+
+        } catch (SQLException e) {
+            ErrorDialog errorDialog = new ErrorDialog("Error buscando el clientes con ID " + clientePk, e);
+            errorDialog.setVisible(true);
+
+        } catch (Exception e) {
+            ErrorDialog errorDialog = new ErrorDialog("Error buscando el clientes con ID " + clientePk, e);
+            errorDialog.setVisible(true);
+
+        }
         return listaClientes;
     }
 
     @Override
-    public TreeSet<ClientesDTO> buscarPorNombre() {
+    public TreeSet<ClientesDTO> buscarPorNombre(String nombreCliente) {
         return listaClientes;
     }
 

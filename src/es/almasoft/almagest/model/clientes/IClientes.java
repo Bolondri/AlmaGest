@@ -23,7 +23,7 @@ public interface IClientes {
     public void eliminarCliente(ClientesDTO cliente);
     public void actualizarCliente(ClientesDTO cliente);
     TreeSet<ClientesDTO> listaClientes();
-    TreeSet<ClientesDTO> buscarPorId();
-    TreeSet<ClientesDTO> buscarPorNombre();
+    TreeSet<ClientesDTO> buscarPorId(Integer clientePk);
+    TreeSet<ClientesDTO> buscarPorNombre(String nombreCliente);
 
 }
