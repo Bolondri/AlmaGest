@@ -7,13 +7,12 @@ package es.almasoft.almagest.controller.clientes;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import static java.util.Objects.isNull;
 import javax.swing.JDesktopPane;
 import es.almasoft.almagest.DAO.clientes.ClientesDAO;
 import es.almasoft.almagest.model.clientes.ClientesDTO;
 import es.almasoft.almagest.view.clientes.ClientesPanel;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 
 /**
@@ -24,25 +23,30 @@ import java.sql.Connection;
  *
  * @author amdel
  */
-public class ClientesController implements ActionListener, MouseListener {
+public class ClientesController implements ActionListener, WindowListener {
 
     private Connection conn = null;
-    private ClientesPanel clientesPanel;
+    private ClientesPanel clientesPanel = ClientesPanel.getInstance();
     private ClientesDTO clientesDTO;
     private ClientesDAO clientesDAO;
+    private JDesktopPane pane;
     
-    public ClientesController(JDesktopPane pane, Connection conexion) {
-        this.conn = conexion;
-        if (isNull(clientesPanel)) {
-            clientesPanel = ClientesPanel.getInstance();
-            pane.add(clientesPanel);
-        }
 
-        clientesPanel.setVisible(true);
+    public ClientesController(JDesktopPane pane, Connection conexion) {
+        this.pane=pane;
+        this.conn = conexion;
+        //usefull part for you.. if open shows, if not creates new one 
+        if (!this.clientesPanel.isVisible()) {
+            {
+                this.pane.add(this.clientesPanel);
+                this.clientesPanel.setVisible(true);
+            }
+        }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e
+    ) {
         String accion = e.getActionCommand();
 
         switch (accion) {
@@ -59,24 +63,41 @@ public class ClientesController implements ActionListener, MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
+    public void windowOpened(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {
+    public void windowClosing(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void windowClosed(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        clientesPanel.setVisible(false);
+        this.pane.remove(clientesPanel);
+        
     }
 
     @Override
-    public void mouseEntered(MouseEvent e) {
+    public void windowIconified(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {
+    public void windowDeiconified(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

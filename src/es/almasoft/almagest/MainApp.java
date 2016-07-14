@@ -21,10 +21,10 @@ public class MainApp {
 
     public static void main(String[] args) {
         
-        //MainController mainController = new MainController();
+        MainController mainController = new MainController();
         //Se obtiene la lista de personas
 
-        ConexionBD conexionBD = new ConexionBD();
+        /*ConexionBD conexionBD = new ConexionBD();
         Connection conn = conexionBD.getConnection();
         ClientesDAO clientesDAO = new ClientesDAO(conn);
         /*TreeSet<ClientesDTO> listaClientes = clientesDAO.listaClientes();
@@ -39,10 +39,10 @@ public class MainApp {
                         result[i].getApellidoMaternoCliente().trim());
 
             }
-        }*/
+        }
         ClientesDTO cliente = new ClientesDTO();
         TreeSet<ClientesDTO> lista = clientesDAO.buscarPorId(3);
-        
+        */
 
     }
 

@@ -5,6 +5,8 @@
  */
 package es.almasoft.almagest.view.clientes;
 
+import javax.swing.WindowConstants;
+
 /**
  *
  * @author amdel
@@ -15,13 +17,6 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
      * Creates new form ClientesPanel
      */
     private static ClientesPanel instanciaClientesPanel;
-
-    public static ClientesPanel getInstance() {
-        if (instanciaClientesPanel == null) {
-            instanciaClientesPanel = new ClientesPanel();
-        }
-        return instanciaClientesPanel;
-    }
 
     public ClientesPanel() {
         initComponents();
@@ -43,7 +38,6 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         setClosable(true);
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         setIconifiable(true);
         setMaximizable(true);
         setTitle("Mantenimientos de Clientes");
@@ -100,5 +94,12 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanelListaClientes;
     private javax.swing.JTabbedPane jTabbedPaneClientes;
     // End of variables declaration//GEN-END:variables
+
+    public static ClientesPanel getInstance() {
+        if (instanciaClientesPanel == null) {
+            instanciaClientesPanel = new ClientesPanel();
+        }
+        return instanciaClientesPanel;
+    }
 
 }
