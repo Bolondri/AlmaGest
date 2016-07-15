@@ -20,14 +20,15 @@ import java.util.TreeSet;
 public class MainApp {
 
     public static void main(String[] args) {
-        
+
         MainController mainController = new MainController();
         //Se obtiene la lista de personas
 
         /*ConexionBD conexionBD = new ConexionBD();
         Connection conn = conexionBD.getConnection();
         ClientesDAO clientesDAO = new ClientesDAO(conn);
-        /*TreeSet<ClientesDTO> listaClientes = clientesDAO.listaClientes();
+        Integer id = 5;
+        TreeSet<ClientesDTO> listaClientes = clientesDAO.buscarPorId(id);
         ClientesDTO[] result = listaClientes.toArray(new ClientesDTO[listaClientes.size()]);
 
         //se valida si se obtubo o no informacion
@@ -39,11 +40,13 @@ public class MainApp {
                         result[i].getApellidoMaternoCliente().trim());
 
             }
+        }else{
+            System.out.println("No existe el cliente con ID: "+id);
         }
-        ClientesDTO cliente = new ClientesDTO();
+        conexionBD.closeConnection();
+        /*ClientesDTO cliente = new ClientesDTO();
         TreeSet<ClientesDTO> lista = clientesDAO.buscarPorId(3);
-        */
-
+         */
     }
 
 }

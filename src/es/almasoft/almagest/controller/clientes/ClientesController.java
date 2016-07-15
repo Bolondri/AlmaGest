@@ -11,9 +11,14 @@ import javax.swing.JDesktopPane;
 import es.almasoft.almagest.DAO.clientes.ClientesDAO;
 import es.almasoft.almagest.model.clientes.ClientesDTO;
 import es.almasoft.almagest.view.clientes.ClientesPanel;
+import java.awt.Dimension;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.TreeSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -26,19 +31,23 @@ import java.sql.Connection;
 public class ClientesController implements ActionListener, WindowListener {
 
     private Connection conn = null;
-    private ClientesPanel clientesPanel = ClientesPanel.getInstance();
-    private ClientesDTO clientesDTO;
+    private final ClientesPanel clientesPanel;
+    private final JDesktopPane pane;
     private ClientesDAO clientesDAO;
-    private JDesktopPane pane;
-    
 
     public ClientesController(JDesktopPane pane, Connection conexion) {
-        this.pane=pane;
+        this.clientesPanel = ClientesPanel.getInstance();
+        this.pane = pane;
         this.conn = conexion;
         //usefull part for you.. if open shows, if not creates new one 
         if (!this.clientesPanel.isVisible()) {
             {
+                Dimension desktopSize = pane.getSize();
+                Dimension jInternalFrameSize = this.clientesPanel.getSize();
+                this.clientesPanel.setLocation((desktopSize.width - jInternalFrameSize.width) / 2,
+                        (desktopSize.height - jInternalFrameSize.height) / 2);
                 this.pane.add(this.clientesPanel);
+                this.listarClientes();
                 this.clientesPanel.setVisible(true);
             }
         }
@@ -51,15 +60,46 @@ public class ClientesController implements ActionListener, WindowListener {
 
         switch (accion) {
             case "insertarCliente":
-                System.out.println("Pulsado insertar");
+
             case "eliminarCliente":
-                System.out.println("Pulsado eliminar");
+
             case "actualizarCliente":
-                System.out.println("Pulsado actualizar");
+
             case "listar":
-                System.out.println("Obtener lista clientes");
+
+        }
+    }
+
+    private void listarClientes() {
+        //Se obtiene la lista de clientes
+        clientesDAO = new ClientesDAO(conn);
+        TreeSet<ClientesDTO> listaClientes = clientesDAO.listaClientes();
+        ClientesDTO[] result = listaClientes.toArray(new ClientesDTO[listaClientes.size()]);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+
+        while (this.clientesPanel.getModelo().getRowCount() > 0) {
+            this.clientesPanel.getModelo().removeRow(0);
         }
 
+        //se valida si se obtubo o no informacion
+        if (listaClientes.size() > 0) {
+            int i;
+            //se recorre la lista de libros asignandose cada posicion en un objeto libro
+            for (i = 0; i < result.length; i++) {
+                this.clientesPanel.getModelo().insertRow(i, new Object[]{
+                    i+1,
+                    result[i].getNifCliente(),
+                    result[i].getApellidoPaternoCliente(),
+                    result[i].getApellidoMaternoCliente(),
+                    result[i].getNombreCliente(),
+                    sdf.format(result[i].getFechaNacimientoCliente())
+                });
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Actualmente no "
+                    + "existen registros de clientes", "INFORMACIÓN",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -75,9 +115,6 @@ public class ClientesController implements ActionListener, WindowListener {
     @Override
     public void windowClosed(WindowEvent e) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        clientesPanel.setVisible(false);
-        this.pane.remove(clientesPanel);
-        
     }
 
     @Override

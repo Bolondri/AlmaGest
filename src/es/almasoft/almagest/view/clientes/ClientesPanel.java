@@ -5,7 +5,12 @@
  */
 package es.almasoft.almagest.view.clientes;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,10 +22,14 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
      * Creates new form ClientesPanel
      */
     private static ClientesPanel instanciaClientesPanel;
+    private DefaultTableModel modelo;
 
     public ClientesPanel() {
         initComponents();
-        System.out.println("Creado Panel Clientes");
+        this.modelo = (DefaultTableModel) this.jTableClientes.getModel();
+        add(new JScrollPane(jTableClientes), BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
     }
 
     /**
@@ -34,6 +43,8 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
 
         jTabbedPaneClientes = new javax.swing.JTabbedPane();
         jPanelListaClientes = new javax.swing.JPanel();
+        jScrollPaneClientes = new javax.swing.JScrollPane();
+        jTableClientes = new javax.swing.JTable();
         jPanelDatosPersonales = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -42,48 +53,47 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setTitle("Mantenimientos de Clientes");
 
-        org.jdesktop.layout.GroupLayout jPanelListaClientesLayout = new org.jdesktop.layout.GroupLayout(jPanelListaClientes);
-        jPanelListaClientes.setLayout(jPanelListaClientesLayout);
-        jPanelListaClientesLayout.setHorizontalGroup(
-            jPanelListaClientesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 768, Short.MAX_VALUE)
-        );
-        jPanelListaClientesLayout.setVerticalGroup(
-            jPanelListaClientesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 400, Short.MAX_VALUE)
-        );
+        jPanelListaClientes.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Clientes"));
+        jPanelListaClientes.setLayout(new java.awt.BorderLayout());
+
+        jTableClientes.setAutoCreateRowSorter(true);
+        jTableClientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Nº Registro", "NIF", "Apellido paterno", "Apellido materno", "Nombre", "Fecha de nacimiento"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPaneClientes.setViewportView(jTableClientes);
+
+        jPanelListaClientes.add(jScrollPaneClientes, java.awt.BorderLayout.CENTER);
 
         jTabbedPaneClientes.addTab("Lista de Clientes", jPanelListaClientes);
 
-        org.jdesktop.layout.GroupLayout jPanelDatosPersonalesLayout = new org.jdesktop.layout.GroupLayout(jPanelDatosPersonales);
-        jPanelDatosPersonales.setLayout(jPanelDatosPersonalesLayout);
-        jPanelDatosPersonalesLayout.setHorizontalGroup(
-            jPanelDatosPersonalesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 768, Short.MAX_VALUE)
-        );
-        jPanelDatosPersonalesLayout.setVerticalGroup(
-            jPanelDatosPersonalesLayout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(0, 400, Short.MAX_VALUE)
-        );
-
+        jPanelDatosPersonales.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Personales"));
+        jPanelDatosPersonales.setLayout(new java.awt.BorderLayout());
         jTabbedPaneClientes.addTab("Datos Personales", jPanelDatosPersonales);
 
-        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTabbedPaneClientes)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-            .add(layout.createSequentialGroup()
-                .addContainerGap()
-                .add(jTabbedPaneClientes)
-                .addContainerGap())
-        );
+        getContentPane().add(jTabbedPaneClientes, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -92,7 +102,9 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanelDatosPersonales;
     private javax.swing.JPanel jPanelListaClientes;
+    private javax.swing.JScrollPane jScrollPaneClientes;
     private javax.swing.JTabbedPane jTabbedPaneClientes;
+    private javax.swing.JTable jTableClientes;
     // End of variables declaration//GEN-END:variables
 
     public static ClientesPanel getInstance() {
@@ -101,5 +113,23 @@ public class ClientesPanel extends javax.swing.JInternalFrame {
         }
         return instanciaClientesPanel;
     }
+
+    public DefaultTableModel getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(DefaultTableModel modelo) {
+        this.modelo = modelo;
+    }
+
+    public JTable getjTableClientes() {
+        return jTableClientes;
+    }
+
+    public void setjTableClientes(JTable jTableClientes) {
+        this.jTableClientes = jTableClientes;
+    }
+    
+    
 
 }
